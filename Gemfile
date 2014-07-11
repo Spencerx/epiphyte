@@ -22,4 +22,5 @@ end
 group :test, :development do
   gem 'debugger'
   gem 'awesome_print'
+  gem 'rest-client'
 end

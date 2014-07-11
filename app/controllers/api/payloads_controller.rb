@@ -1,15 +1,14 @@
 class Api::PayloadsController < Api::BaseController
 
-  respond_to :json
-
   before_filter :determine_notificator, :authorize_authenticator
+  skip_before_action :verify_authenticity_token
 
   def create
     @payload = Payload.new(blob: params[:payload], request_host: request.host)
     @payload.notificator = @notificator
     @payload.save
     logger.info "Received from #{request.host}"
-    respond_with(:api, @payload)
+    respond_with(@payload, location: nil)
   end
 
   protected
@@ -31,6 +30,8 @@ class Api::PayloadsController < Api::BaseController
   def authentic_travis_request?
     travis_key = Rails.application.secrets.travis_token
     repo = request.headers['Travis-Repo-Slug']
+    return false unless travis_key && repo
+    logger.info 'Gonna check '+ Digest::SHA256.hexdigest(repo + travis_key)
     Digest::SHA256.hexdigest(repo + travis_key) == request.headers['Authorization']
   end
 
