@@ -4,9 +4,11 @@ describe '/api/notificators/:notificator_id/payloads' do
 
   context 'travis notificator' do
 
+    let(:repo_slug) { 'opensuse/epiphyte' }
+
     let(:travis_headers) do
       {
-        'Authorization' => 'e94851def45cb3b0160d570358280763576f5be5c24180dd404e4fe05f23d1e9',
+        'Authorization' => Digest::SHA256.hexdigest(repo_slug + Rails.application.secrets.travis_token),
         'Travis-Repo-Slug' => 'opensuse/epiphyte'
       }
     end
