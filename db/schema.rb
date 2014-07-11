@@ -11,16 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140709205517) do
+ActiveRecord::Schema.define(version: 20140711122841) do
 
   create_table "notificators", force: true do |t|
     t.string "name"
     t.string "notifying_host"
+    t.string "slug"
   end
+
+  add_index "notificators", ["slug"], name: "index_notificators_on_slug", unique: true
 
   create_table "payloads", force: true do |t|
     t.text   "blob"
     t.string "notificator_id"
+    t.string "request_host"
   end
 
 end

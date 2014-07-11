@@ -9,6 +9,7 @@ gem 'therubyracer',  platforms: :ruby
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'active_model_serializers'
+gem 'friendly_id'
 
 group :test do
   gem 'rspec-rails'
@@ -16,4 +17,9 @@ group :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'shoulda-matchers'
+end
+
+group :test, :development do
+  gem 'debugger'
+  gem 'awesome_print'
 end

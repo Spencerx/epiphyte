@@ -8,13 +8,6 @@ tmp/*
 .sass-cache/
 coverage/
 public/assets*
-options-local.yml
-hydra.yml
-config/ssl/ventus*
-config/ssl/ignis*
 doc/app
-nbproject
-locale/*/LC_MESSAGES
-tmp.pot
-.rails_footnotes
 vendor/bundle/
+config/secrets.yml
