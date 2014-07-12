@@ -5,6 +5,7 @@ describe Payload do
   it { should validate_presence_of(:blob) }
   it { should validate_presence_of(:notificator) }
   it { should validate_presence_of(:repo_url) }
+  it { should validate_presence_of(:request_host) }
   it { should belong_to(:notificator) }
 
   it 'validates if payload is allowed for request host' do
@@ -14,11 +15,17 @@ describe Payload do
   end
 
   describe 'after_create' do
-
     it 'drops async job after creation' do
-
+      expect_any_instance_of(Payload).to receive(:deploy!)
+      FactoryGirl.create :payload
     end
+  end
 
+  describe '#deploy!' do
+    it 'checks if projects root is present' do
+      expect(Deployer).to receive(:check_filesystem).once
+      subject.send(:deploy!)
+    end
   end
 
 end
