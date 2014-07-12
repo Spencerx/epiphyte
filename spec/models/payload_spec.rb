@@ -3,6 +3,8 @@ require 'rails_helper'
 describe Payload do
 
   it { should validate_presence_of(:blob) }
+  it { should validate_presence_of(:notificator) }
+  it { should belong_to(:notificator) }
 
   it 'validates if payload is allowed for request host' do
     notificator = FactoryGirl.build(:notificator, name: 'foo', notifying_host: '127.0.0.1')
