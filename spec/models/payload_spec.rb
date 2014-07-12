@@ -4,12 +4,21 @@ describe Payload do
 
   it { should validate_presence_of(:blob) }
   it { should validate_presence_of(:notificator) }
+  it { should validate_presence_of(:repo_url) }
   it { should belong_to(:notificator) }
 
   it 'validates if payload is allowed for request host' do
     notificator = FactoryGirl.build(:notificator, name: 'foo', notifying_host: '127.0.0.1')
     payload = subject.class.new(blob: '<foo>', request_host: '192.168.1.2', notificator: notificator)
     expect(payload).to have(1).errors_on(:request_host)
+  end
+
+  describe 'after_create' do
+
+    it 'drops async job after creation' do
+
+    end
+
   end
 
 end

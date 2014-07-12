@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140711122841) do
+ActiveRecord::Schema.define(version: 20140712115612) do
 
   create_table "notificators", force: true do |t|
     t.string "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140711122841) do
     t.text   "blob"
     t.string "notificator_id"
     t.string "request_host"
+    t.string "repo_url"
   end
 
 end

@@ -13,6 +13,8 @@ describe '/api/notificators/:notificator_id/payloads' do
       }
     end
 
+    let(:payload) { JSON.load(Rails.root.join('spec', 'fixtures', 'travis_webhook.json')) }
+
     subject { api_notificator_payloads_url(:format => :json, :notificator_id => 'travis') }
 
     before do
@@ -35,6 +37,11 @@ describe '/api/notificators/:notificator_id/payloads' do
       post subject, nil, { 'Authorization' => 'hack', 'Travis-Repo-Slug' => 'opensuse/epiphyte' }
       expect(response.status).to eq 401
       expect(json_response[:errors]).to eq ['Cannot confirm authenticity']
+    end
+
+    it 'saves properly formed payload' do
+      post subject, { payload: payload }, travis_headers
+      expect(response.status).to eq 201
     end
 
   end
