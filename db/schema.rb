@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140803101921) do
+ActiveRecord::Schema.define(version: 20140803111617) do
 
   create_table "notificators", force: true do |t|
     t.string "name"
@@ -30,16 +30,22 @@ ActiveRecord::Schema.define(version: 20140803101921) do
   add_index "notificators_projects", ["project_id"], name: "index_notificators_projects_on_project_id"
 
   create_table "payloads", force: true do |t|
-    t.text   "blob"
-    t.string "notificator_id"
-    t.string "request_host"
-    t.string "repo_url"
+    t.text    "blob"
+    t.string  "notificator_id"
+    t.string  "request_host"
+    t.string  "repo_url"
+    t.integer "project_id"
   end
+
+  add_index "payloads", ["project_id"], name: "index_payloads_on_project_id"
 
   create_table "projects", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
+
+  add_index "projects", ["slug"], name: "index_projects_on_slug", unique: true
 
 end

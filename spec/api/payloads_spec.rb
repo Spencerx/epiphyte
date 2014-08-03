@@ -1,10 +1,12 @@
 require 'rails_helper'
 
-describe '/api/notificators/:notificator_id/payloads' do
+describe '/api/projects/:project_id/notificators/:notificator_id/payloads' do
 
   context 'travis notificator' do
 
     let(:repo_slug) { 'opensuse/epiphyte' }
+    let(:project) { FactoryGirl.create(:project, name: 'myProject') }
+    let(:notificator) { FactoryGirl.create :notificator, name: 'travis' }
 
     let(:travis_headers) do
       {
@@ -15,15 +17,20 @@ describe '/api/notificators/:notificator_id/payloads' do
 
     let(:payload) { JSON.load(Rails.root.join('spec', 'fixtures', 'travis_webhook.json')) }
 
-    subject { api_notificator_payloads_url(:format => :json, :notificator_id => 'travis') }
+    subject { api_project_notificator_payloads_url(format: :json, notificator_id: 'travis', project_id: 'myProject') }
 
     before do
-      FactoryGirl.create :notificator, name: 'travis'
+      project.notificators << notificator
     end
 
     it 'finds a notificator by slug' do
       post subject, nil, travis_headers
-      expect(assigns(:notificator).name).to eq 'travis'
+      expect(assigns(:notificator)).to_not be nil
+    end
+
+    it 'finds a project by slug' do
+      post subject, nil, travis_headers
+      expect(assigns(:project)).to_not be nil
     end
 
     it 'returns error if request host is not conformant with notificator' do

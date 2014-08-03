@@ -7,7 +7,13 @@ namespace :travis do
     file = File.read(Rails.root.join 'spec', 'fixtures', 'travis_webhook.json')
     request_json = JSON.parse(file, symbolize_keys: true)
     begin
-      response = RestClient.post('http://localhost:3000/api/notificators/travis/payloads.json', { :payload => request_json }, :Accept => 'application/json', :Authorization => auth_header, :'Travis-Repo-Slug' => repo_slug)
+      response = RestClient.post(
+          'http://localhost:3000/api/projects/osem/notificators/travis/payloads.json',
+          { :payload => request_json },
+          :Accept => 'application/json',
+          :Authorization => auth_header,
+          :'Travis-Repo-Slug' => repo_slug
+      )
     rescue => e
       response = e.response
     end

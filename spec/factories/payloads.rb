@@ -3,6 +3,6 @@ FactoryGirl.define do
     repo_url 'MyString'
     request_host 'www.example.com'
     blob { JSON.load(Rails.root.join('spec', 'fixtures', 'travis_webhook.json')) }
-    notificators
+    notificator { FactoryGirl.create :notificator }
   end
 end

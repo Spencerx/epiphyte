@@ -5,7 +5,7 @@ class Payload < ActiveRecord::Base
   serialize :blob
 
   belongs_to :notificator
-  has_one :project, through: :notificator
+  belongs_to :project
   validates :notificator, presence: true
   validates :repo_url, presence: true
   validates :blob, presence: true
@@ -20,7 +20,7 @@ class Payload < ActiveRecord::Base
 
   def allowed_host
     if notificator && request_host != notificator.notifying_host
-      errors.add(:request_host, 'is not allowed ip')
+      errors.add(:request_host, "#{request_host} is not allowed ip")
     end
   end
 
@@ -29,7 +29,7 @@ class Payload < ActiveRecord::Base
   end
 
   def deploy!
-    Deployer.new(payload: self).deploy!
+    #Rails.queue[:deployments].push(Deployer.new(payload: self).deploy!)
   end
 
 end

@@ -1,11 +1,12 @@
 class Api::PayloadsController < Api::BaseController
 
   before_filter :determine_notificator, :authorize_authenticator
-  skip_before_action :verify_authenticity_token
 
   def create
+    @project = Project.friendly.find(params[:project_id])
     @payload = Payload.new(blob: params[:payload], request_host: request.host)
     @payload.notificator = @notificator
+    @payload.project = @project
     @payload.save
     logger.info "Received from #{request.host}"
     respond_with(@payload, location: nil)
