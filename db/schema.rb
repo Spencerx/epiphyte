@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140712115612) do
+ActiveRecord::Schema.define(version: 20140803101921) do
 
   create_table "notificators", force: true do |t|
     t.string "name"
@@ -21,11 +21,25 @@ ActiveRecord::Schema.define(version: 20140712115612) do
 
   add_index "notificators", ["slug"], name: "index_notificators_on_slug", unique: true
 
+  create_table "notificators_projects", id: false, force: true do |t|
+    t.integer "notificator_id", null: false
+    t.integer "project_id",     null: false
+  end
+
+  add_index "notificators_projects", ["notificator_id"], name: "index_notificators_projects_on_notificator_id"
+  add_index "notificators_projects", ["project_id"], name: "index_notificators_projects_on_project_id"
+
   create_table "payloads", force: true do |t|
     t.text   "blob"
     t.string "notificator_id"
     t.string "request_host"
     t.string "repo_url"
+  end
+
+  create_table "projects", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

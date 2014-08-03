@@ -2,13 +2,17 @@ require 'deployer'
 
 class Payload < ActiveRecord::Base
 
+  serialize :blob
+
   belongs_to :notificator
+  has_one :project, through: :notificator
   validates :notificator, presence: true
   validates :repo_url, presence: true
   validates :blob, presence: true
   validates :request_host, presence: true
-  serialize :blob
+
   validate :allowed_host
+
   before_validation :extract_repo_url
   after_create :deploy!
 
@@ -25,7 +29,7 @@ class Payload < ActiveRecord::Base
   end
 
   def deploy!
-    Deployer.check_filesystem
+    Deployer.new(payload: self).deploy!
   end
 
 end
