@@ -14,6 +14,7 @@ gem 'friendly_id'
 group :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
+  gem 'rspec-activemodel-mocks'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'shoulda-matchers'

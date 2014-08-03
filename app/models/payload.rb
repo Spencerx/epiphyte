@@ -11,7 +11,7 @@ class Payload < ActiveRecord::Base
   validates :blob, presence: true
   validates :request_host, presence: true
 
-  validate :allowed_host
+  validate :allowed_host, :supported_notificator
 
   before_validation :extract_repo_url
   after_create :deploy!
@@ -26,6 +26,12 @@ class Payload < ActiveRecord::Base
 
   def extract_repo_url
     self.repo_url = blob['repository']['url'] if blob && blob['repository']
+  end
+
+  def supported_notificator
+    unless project && project.notificators.include?(notificator)
+      errors.add(:project, 'requested project does not supports requested notificator')
+    end
   end
 
   def deploy!

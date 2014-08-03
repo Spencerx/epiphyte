@@ -5,7 +5,7 @@ describe '/api/projects/:project_id/notificators/:notificator_id/payloads' do
   context 'travis notificator' do
 
     let(:repo_slug) { 'opensuse/epiphyte' }
-    let(:project) { FactoryGirl.create(:project, name: 'myProject') }
+    let!(:project) { FactoryGirl.create(:project, name: 'myProject') }
     let(:notificator) { FactoryGirl.create :notificator, name: 'travis' }
 
     let(:travis_headers) do
@@ -17,7 +17,7 @@ describe '/api/projects/:project_id/notificators/:notificator_id/payloads' do
 
     let(:payload) { JSON.load(Rails.root.join('spec', 'fixtures', 'travis_webhook.json')) }
 
-    subject { api_project_notificator_payloads_url(format: :json, notificator_id: 'travis', project_id: 'myProject') }
+    subject { api_project_notificator_payloads_url(format: :json, notificator_id: 'travis', project_id: 'myproject') }
 
     before do
       project.notificators << notificator
@@ -37,7 +37,7 @@ describe '/api/projects/:project_id/notificators/:notificator_id/payloads' do
       host! 'nottravisallowed'
       post subject, nil, travis_headers
       expect(response.status).to eq 422
-      expect(json_response[:errors][:request_host]).to eq ['is not allowed ip']
+      expect(json_response[:errors][:request_host]).to eq ['nottravisallowed is not allowed ip']
     end
 
     it 'validates authenticity by headers' do
